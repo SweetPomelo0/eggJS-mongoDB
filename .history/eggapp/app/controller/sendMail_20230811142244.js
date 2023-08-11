@@ -9,14 +9,13 @@ class sendController extends Controller {
     const lastSentTime = await ctx.app.redis.get(`lastSentTime:${account}`);
     const currentTime = Date.now();
 
-    // 获取发送次数
     const sentCount = await ctx.app.redis.get(`sentCount:${account}`);
 
     // 如果在60秒内尝试再次发送验证码，返回提示信息
     if (lastSentTime && currentTime - lastSentTime < 60000) {
       ctx.body = {
         code: 400,
-        message: 'Please wait at least 60 seconds before sending another verification code.',
+        msg: 'Please wait at least 60 seconds before sending another verification code.',
       };
       return;
     }
@@ -25,7 +24,7 @@ class sendController extends Controller {
     if (sentCount && parseInt(sentCount) >= 5) {
       ctx.body = {
         code: 400,
-        message: 'Frequent requests. Please try again later.',
+        msg: 'Frequent requests. Please try again later.',
       };
       return;
     }
@@ -35,8 +34,8 @@ class sendController extends Controller {
     await ctx.service.sendMail.sendEmail(account, code);
 
     // 更新发送次数和发送时间
-    await ctx.app.redis.set(`sentCount:${account}`, sentCount ? parseInt(sentCount) + 1 : 1, 'EX', 3000);
-    await ctx.app.redis.set(`lastSentTime:${account}`, currentTime, 'EX', 300000);
+    await ctx.app.redis.set(`sentCount:${account}`, sentCount ? parseInt(sentCount) + 1 : 1, 'EX', 3600);
+    await ctx.app.redis.set(`lastSentTime:${account}`, currentTime);
 
     ctx.body = {
       code: 200,

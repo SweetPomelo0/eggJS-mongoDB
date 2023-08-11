@@ -3,14 +3,14 @@ const Controller = require('egg').Controller;
 class sendController extends Controller {
   async sendVerificationCode() {
     const { ctx } = this;
-    const { account } = ctx.request.body; // 获取邮箱地址
+    const { email } = ctx.request.body; // 获取邮箱地址
 
     // 使用 Redis 获取上次发送时间戳
-    const lastSentTime = await ctx.app.redis.get(`lastSentTime:${account}`);
+    const lastSentTime = await ctx.app.redis.get(`lastSentTime:${email}`);
     const currentTime = Date.now();
 
     // 获取发送次数
-    const sentCount = await ctx.app.redis.get(`sentCount:${account}`);
+    const sentCount = await ctx.app.redis.get(`sentCount:${email}`);
 
     // 如果在60秒内尝试再次发送验证码，返回提示信息
     if (lastSentTime && currentTime - lastSentTime < 60000) {
@@ -32,11 +32,11 @@ class sendController extends Controller {
 
     const code = Math.floor(100000 + Math.random() * 900000); // 生成随机的 6 位验证码
 
-    await ctx.service.sendMail.sendEmail(account, code);
+    await ctx.service.sendMail.sendEmail(email, code);
 
     // 更新发送次数和发送时间
-    await ctx.app.redis.set(`sentCount:${account}`, sentCount ? parseInt(sentCount) + 1 : 1, 'EX', 3000);
-    await ctx.app.redis.set(`lastSentTime:${account}`, currentTime, 'EX', 300000);
+    await ctx.app.redis.set(`sentCount:${email}`, sentCount ? parseInt(sentCount) + 1 : 1, 'EX', 3600);
+    await ctx.app.redis.set(`lastSentTime:${email}`, currentTime);
 
     ctx.body = {
       code: 200,

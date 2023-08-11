@@ -2,19 +2,19 @@ const Controller = require('egg').Controller;
 const bcrypt = require('bcryptjs');
 
 class UserController extends Controller {
-  // /**
-  //  * 获取用户列表-测试
-  //  */
-  // async getUserList() {
-  //   const { ctx } = this;
-  //   const users = await ctx.service.user.findAll();
+  /**
+   * 获取用户列表-测试
+   */
+  async getUserList() {
+    const { ctx } = this;
+    const users = await ctx.service.user.findAll();
 
-  //   ctx.body = {
-  //     code: 0,
-  //     message: 'success',
-  //     data: users,
-  //   };
-  // }
+    ctx.body = {
+      code: 0,
+      message: 'success',
+      data: users,
+    };
+  }
 
   /**
    * 查询自己用户信息
@@ -27,13 +27,13 @@ class UserController extends Controller {
 
     if (currentUser) {
       ctx.body = {
-        code: 200,
+        code: 0,
         data: currentUser,
         message: 'query success',
       };
     } else {
       ctx.body = {
-        code: 200,
+        code: 404,
         message: 'User not found',
       };
     }
@@ -48,7 +48,7 @@ class UserController extends Controller {
     // 验证邮箱格式
     if (!ctx.service.user.isValidEmail(req.email)) {
       ctx.body = {
-        code: 200,
+        code: 400,
         message: 'Invalid email format',
       };
       return;
@@ -58,20 +58,20 @@ class UserController extends Controller {
     const existingUser = await ctx.service.user.findByEmail(req.email);
     if (existingUser) {
       ctx.body = {
-        code: 200,
+        code: 400,
         message: 'Email already registered',
       };
       return;
     }
 
-    // 验证密码长度，密码不合法返回相应错误信息
-    if (req.password.length < 8) {
-      ctx.body = {
-        code: 200,
-        message: 'Password must be at least 8 characters long',
-      };
-      return;
-    }
+    // // 验证密码长度，密码不合法返回相应错误信息
+    // if (req.password.length < 8) {
+    //   ctx.body = {
+    //     code: 400,
+    //     message: 'Password must be at least 8 characters long',
+    //   };
+    //   return;
+    // }
 
     // 执行注册逻辑
     const res = await ctx.service.user.createUser(req);
@@ -85,7 +85,7 @@ class UserController extends Controller {
     // const retrievedToken = await ctx.service.token.getTokenFromRedis(userId);
 
     ctx.body = {
-      code: 200,
+      code: 0,
       data: res,
       message: 'register success',
       token,
@@ -109,20 +109,20 @@ class UserController extends Controller {
         const userId = existingUser.email;
         const token = await ctx.service.token.generateToken(userId);
         ctx.body = {
-          code: 200,
+          code: 0,
           message: 'login success',
           token,
         };
       } else {
         ctx.body = {
-          code: 200,
+          code: 0,
           message: 'error password',
         };
       }
     } else {
       // 用户邮箱不存在，提示注册
       ctx.body = {
-        code: 200,
+        code: 0,
         message: 'email not existing , please register.',
       };
     }
@@ -152,13 +152,13 @@ class UserController extends Controller {
         };
       } else {
         ctx.body = {
-          code: 200,
+          code: 400,
           message: 'Invalid verification code.',
         };
       }
     } else {
       ctx.body = {
-        code: 200,
+        code: 400,
         message: 'Verification code not found. Please request a new code.',
       };
     }
@@ -182,7 +182,7 @@ class UserController extends Controller {
       if (savedCode.toString() === code) {
         // 重置密码成功后删除用户的 token
         const userId = email; // 假设你的用户标识是邮箱
-        await ctx.service.token.deleteToken(userId);
+        await ctx.service.tokenService.deleteToken(userId);
         await ctx.service.user.updatePasswordByEmail(email, newPassword);
 
         ctx.body = {
@@ -191,13 +191,13 @@ class UserController extends Controller {
         };
       } else {
         ctx.body = {
-          code: 200,
+          code: 400,
           message: 'Invalid verification code.',
         };
       }
     } else {
       ctx.body = {
-        code: 200,
+        code: 400,
         message: 'Verification code not found. Please request a new code.',
       };
     }

@@ -35,8 +35,8 @@ class sendController extends Controller {
     await ctx.service.sendMail.sendEmail(account, code);
 
     // 更新发送次数和发送时间
-    await ctx.app.redis.set(`sentCount:${account}`, sentCount ? parseInt(sentCount) + 1 : 1, 'EX', 3000);
-    await ctx.app.redis.set(`lastSentTime:${account}`, currentTime, 'EX', 300000);
+    await ctx.app.redis.set(`sentCount:${account}`, sentCount ? parseInt(sentCount) + 1 : 1, 'EX', 3600);
+    await ctx.app.redis.set(`lastSentTime:${account}`, currentTime);
 
     ctx.body = {
       code: 200,

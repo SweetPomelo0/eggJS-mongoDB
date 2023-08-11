@@ -182,7 +182,7 @@ class UserController extends Controller {
       if (savedCode.toString() === code) {
         // 重置密码成功后删除用户的 token
         const userId = email; // 假设你的用户标识是邮箱
-        await ctx.service.token.deleteToken(userId);
+        await ctx.service.tokenService.deleteToken(userId);
         await ctx.service.user.updatePasswordByEmail(email, newPassword);
 
         ctx.body = {

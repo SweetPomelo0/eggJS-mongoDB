@@ -26,7 +26,6 @@ module.exports = app => {
     },
     is_deleted: {
       type: Number,
-      default: 1,
     },
   });
 
