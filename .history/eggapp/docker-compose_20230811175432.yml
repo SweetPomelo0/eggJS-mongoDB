@@ -1,0 +1,49 @@
+
+version: '3'
+services:
+  web:
+    build: .
+    command: npm run start
+    restart: always
+    deploy:
+      replicas: 2
+    volumes:
+      - .:/myapp
+    ports:
+      - "7002:7001"
+
+
+    # egg_test:
+    #     container_name: server
+    #     build:
+    #         context: .
+    #         dockerfile: Dockerfile
+    #     depends_on:
+    #         - redis
+    #         - mongo
+    #     ports:
+    #       - "7001:7001"
+    #     networks:
+    #             - my-server
+
+
+
+  mongo:
+      container_name: mongo
+      image: mongo
+      volumes:
+          - /Users/cuteerha/Documents/Docker/mongo/db:/data/db   # /data/db是container中存放数据位置
+      restart: always
+      # networks:
+      #     - my-server
+  redis:
+      container_name: redis
+      image: redis
+      restart: on-failure
+      volumes:
+          - /Users/cuteerha/Documents/Docker/redis/conf/redis.conf:/usr/local/etc/redis/redis.conf
+          - /Users/cuteerha/Documents/Docker/redis/db/:/data/
+      # networks:
+      #     - my-server
+# networks:
+#     my-server:

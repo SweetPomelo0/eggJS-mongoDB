@@ -31,8 +31,8 @@ module.exports = appInfo => {
 
   // mongoose数据库配置
   config.mongoose = {
-    url: 'mongodb://127.0.0.1:27017/momo', // 端口号27017数据库名momo
-    // host: 'mongo',
+    // url: 'mongodb://127.0.0.1:27017/momo', // 端口号27017数据库名momo
+    host: 'mongo',
     options: { useNewUrlParser: true, useUnifiedTopology: true }, // 其他配置警告解除方法
   };
 
@@ -42,6 +42,7 @@ module.exports = appInfo => {
 
   // Redis数据库配置
   config.redis = {
+    host: 'redis',
     client: {
       port: 6379, // Redis port
       host: '127.0.0.1', // Redis host

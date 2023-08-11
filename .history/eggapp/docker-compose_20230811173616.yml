@@ -1,0 +1,51 @@
+
+version: '3'
+services:
+    egg_test:
+        container_name: server
+        build:
+            context: .
+            dockerfile: Dockerfile
+        depends_on:
+            - redis
+            - mongo
+        ports:
+          - "7001:7001"
+        networks:
+                - my-server
+    mongo:
+        container_name: mongo
+        image: mongo
+        volumes:
+            - /Users/cuteerha/Documents/Docker/mongo/db:/data/db   # /data/db是container中存放数据位置
+        restart: always
+        networks:
+            - my-server
+    mongo-express:
+        links:
+          - mongo:mongo
+        image: mongo-express
+        restart: always
+        depends_on:
+            - mongo
+        networks:
+            - my-server
+        ports:
+          - 8081:8081
+        environment:
+          ME_CONFIG_OPTIONS_EDITORTHEME: 3024-night
+          ME_CONFIG_BASICAUTH_USERNAME: junmoxiao11
+          ME_CONFIG_BASICAUTH_PASSWORD: junmoxiao11
+          ME_CONFIG_MONGODB_ADMINUSERNAME: junmoxiao
+          ME_CONFIG_MONGODB_ADMINPASSWORD: junmoxiao
+    redis:
+        container_name: redis
+        image: redis
+        restart: on-failure
+        volumes:
+            - /Users/cuteerha/Documents/Docker/redis/conf/redis.conf:/usr/local/etc/redis/redis.conf
+            - /Users/cuteerha/Documents/Docker/redis/db/:/data/
+        networks:
+            - my-server
+networks:
+    my-server:

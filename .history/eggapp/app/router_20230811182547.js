@@ -5,6 +5,7 @@
  */
 module.exports = app => {
   const { router, controller } = app;
+  // router.get('/hello', jwt, controller.home.index);
   router.get('/', controller.home.index); // 主页
   // router.get('/users', controller.user.getUserList); // 获取所有用户信息 - 测试
   router.post('/register', controller.user.register); // 账号注册
