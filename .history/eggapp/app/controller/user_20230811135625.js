@@ -10,8 +10,8 @@ class UserController extends Controller {
     const users = await ctx.service.user.findAll();
 
     ctx.body = {
-      code: 200,
-      message: 'Query success',
+      code: 0,
+      message: 'success',
       data: users,
     };
   }
@@ -27,9 +27,9 @@ class UserController extends Controller {
 
     if (currentUser) {
       ctx.body = {
-        code: 200,
+        code: 0,
         data: currentUser,
-        message: 'Query success',
+        message: 'query success',
       };
     } else {
       ctx.body = {
@@ -85,7 +85,7 @@ class UserController extends Controller {
     // const retrievedToken = await ctx.service.token.getTokenFromRedis(userId);
 
     ctx.body = {
-      code: 200,
+      code: 0,
       data: res,
       message: 'register success',
       token,
@@ -109,20 +109,20 @@ class UserController extends Controller {
         const userId = existingUser.email;
         const token = await ctx.service.token.generateToken(userId);
         ctx.body = {
-          code: 200,
+          code: 0,
           message: 'login success',
           token,
         };
       } else {
         ctx.body = {
-          code: 400,
+          code: 0,
           message: 'error password',
         };
       }
     } else {
       // 用户邮箱不存在，提示注册
       ctx.body = {
-        code: 400,
+        code: 0,
         message: 'email not existing , please register.',
       };
     }

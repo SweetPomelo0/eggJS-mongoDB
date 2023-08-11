@@ -1,5 +1,7 @@
 const Service = require('egg').Service;
+// const utils = require('utility');
 const bcrypt = require('bcryptjs');
+// const jwt = require('jsonwebtoken');
 
 class UserService extends Service {
   /**
