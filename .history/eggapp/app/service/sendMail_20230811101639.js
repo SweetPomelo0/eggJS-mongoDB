@@ -3,6 +3,7 @@ const nodemailer = require('nodemailer');
 const dotenv = require('dotenv');
 
 dotenv.config();
+// const redis = require('egg-redis');
 
 class EmailService extends Service {
   async sendEmail(account, code) {
@@ -14,7 +15,7 @@ class EmailService extends Service {
       host: 'smtp.qq.com', // QQ邮箱的SMTP地址
       auth: {
         user: '739304768@qq.com',
-        pass: process.env.AuthorizationCode, // 授权码
+        pass: 'bvlaawrboitdbcgg', // 授权码
       },
     });
 

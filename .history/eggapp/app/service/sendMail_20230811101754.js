@@ -14,7 +14,7 @@ class EmailService extends Service {
       host: 'smtp.qq.com', // QQ邮箱的SMTP地址
       auth: {
         user: '739304768@qq.com',
-        pass: process.env.AuthorizationCode, // 授权码
+        pass: process.env., // 授权码
       },
     });
 
