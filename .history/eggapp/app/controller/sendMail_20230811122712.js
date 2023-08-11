@@ -12,7 +12,7 @@ class sendController extends Controller {
     const sentCount = await ctx.app.redis.get(`sentCount:${account}`);
 
     // 如果在60秒内尝试再次发送验证码，返回提示信息
-    if (lastSentTime && currentTime - lastSentTime < 6000) {
+    if (lastSentTime && currentTime - lastSentTime < 60000) {
       ctx.body = {
         code: 400,
         msg: 'Please wait at least 60 seconds before sending another verification code.',
@@ -20,8 +20,8 @@ class sendController extends Controller {
       return;
     }
 
-    // 频繁调用接口报错
-    if (sentCount && parseInt(sentCount) >= 5) {
+    // 判断发送次数是否过多
+    if (sentCount && parseInt(sentCount) >= 2) {
       ctx.body = {
         code: 400,
         msg: 'Frequent requests. Please try again later.',

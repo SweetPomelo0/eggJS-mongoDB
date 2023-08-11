@@ -103,13 +103,9 @@ class UserController extends Controller {
 
       // 校验密码是否正确
       if (isPasswordValid) {
-        // 生成 Token 并保存到 Redis
-        const userId = existingUser.email;
-        const token = await ctx.service.token.generateToken(userId);
         ctx.body = {
           code: 0,
           message: 'login success',
-          token,
         };
       } else {
         ctx.body = {

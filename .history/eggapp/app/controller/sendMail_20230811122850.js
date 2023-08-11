@@ -20,7 +20,7 @@ class sendController extends Controller {
       return;
     }
 
-    // 频繁调用接口报错
+    // 判断发送次数是否过多
     if (sentCount && parseInt(sentCount) >= 5) {
       ctx.body = {
         code: 400,

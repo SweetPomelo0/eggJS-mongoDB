@@ -76,7 +76,6 @@ class UserController extends Controller {
     // 执行注册逻辑
     const res = await ctx.service.user.createUser(req);
 
-    // 生成 Token 并保存到 Redis
     const userId = req.email;
     const token = await ctx.service.token.generateToken(userId);
     await ctx.service.token.saveTokenToRedis(userId, token);
@@ -100,16 +99,11 @@ class UserController extends Controller {
     const existingUser = await ctx.service.user.findByEmail(req.email);
     if (existingUser) {
       const isPasswordValid = bcrypt.compareSync(req.password, existingUser.password);
-
       // 校验密码是否正确
       if (isPasswordValid) {
-        // 生成 Token 并保存到 Redis
-        const userId = existingUser.email;
-        const token = await ctx.service.token.generateToken(userId);
         ctx.body = {
           code: 0,
           message: 'login success',
-          token,
         };
       } else {
         ctx.body = {

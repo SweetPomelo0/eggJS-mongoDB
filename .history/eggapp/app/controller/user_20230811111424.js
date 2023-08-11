@@ -109,7 +109,6 @@ class UserController extends Controller {
         ctx.body = {
           code: 0,
           message: 'login success',
-          token,
         };
       } else {
         ctx.body = {

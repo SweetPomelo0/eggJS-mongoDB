@@ -12,7 +12,7 @@ class sendController extends Controller {
     const sentCount = await ctx.app.redis.get(`sentCount:${account}`);
 
     // 如果在60秒内尝试再次发送验证码，返回提示信息
-    if (lastSentTime && currentTime - lastSentTime < 6000) {
+    if (lastSentTime && currentTime - lastSentTime < 60000) {
       ctx.body = {
         code: 400,
         msg: 'Please wait at least 60 seconds before sending another verification code.',
@@ -20,7 +20,7 @@ class sendController extends Controller {
       return;
     }
 
-    // 频繁调用接口报错
+    // 判断发送次数是否过多
     if (sentCount && parseInt(sentCount) >= 5) {
       ctx.body = {
         code: 400,
@@ -32,10 +32,6 @@ class sendController extends Controller {
     const code = Math.floor(100000 + Math.random() * 900000); // 生成随机的 6 位验证码
 
     await ctx.service.sendMail.sendEmail(account, code);
-
-    // 更新发送次数和发送时间
-    await ctx.app.redis.set(`sentCount:${account}`, sentCount ? parseInt(sentCount) + 1 : 1, 'EX', 36000);
-    await ctx.app.redis.set(`lastSentTime:${account}`, currentTime, 'EX', 36000);
 
     ctx.body = {
       code: 200,

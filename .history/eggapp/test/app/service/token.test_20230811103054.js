@@ -1,5 +1,5 @@
 const { app, assert } = require('egg-mock/bootstrap');
-// 测试命令 npx egg-bin test test/app/service/token.test.js
+// 测试命令npx egg-bin test test/app/service/token.test.js
 
 describe('TokenService', () => {
   it('should generate and save token in Redis', async () => {
