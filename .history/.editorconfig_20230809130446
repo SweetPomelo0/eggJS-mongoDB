@@ -1,0 +1,21 @@
+# http://editorconfig.org 
+root = true 
+[*] 
+# 用空格代替制表符； 
+indent_style = space 
+# 行前缩进2； 
+indent_size = 2 
+# 换行符为lf，可选crlf或lf
+end_of_line = lf 
+# 设置文件编码为 UTF-8； 
+charset = utf-8 
+# 在保存时删除尾部的空白字符；
+trim_trailing_whitespace = true 
+# 在文件结尾添加换行符； 
+insert_final_newline = true 
+
+[*.md] 
+trim_trailing_whitespace = false 
+
+[Makefile] 
+indent_style = tab
