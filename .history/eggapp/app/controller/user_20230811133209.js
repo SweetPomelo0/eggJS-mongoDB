@@ -163,45 +163,6 @@ class UserController extends Controller {
       };
     }
   }
-
-  /**
-   * 忘记密码
-   */
-  async forgetPassword() {
-    const { ctx, app } = this;
-    const { email, code, newPassword } = ctx.request.body;
-
-    const redisKey = `verification:${email}`;
-    const redisValue = await app.redis.get(redisKey);
-
-    if (redisValue) {
-      const savedData = JSON.parse(redisValue);
-      const savedCode = savedData.code;
-
-      // if (savedCode === parseInt(code)) {
-      if (savedCode.toString() === code) {
-        // 重置密码成功后删除用户的 token
-        const userId = email;
-        await ctx.service.token.deleteToken(userId);
-        await ctx.service.user.updatePasswordByEmail(email, newPassword);
-
-        ctx.body = {
-          code: 200,
-          message: 'Password reset successfully.',
-        };
-      } else {
-        ctx.body = {
-          code: 400,
-          message: 'Invalid verification code.',
-        };
-      }
-    } else {
-      ctx.body = {
-        code: 400,
-        message: 'Verification code not found. Please request a new code.',
-      };
-    }
-  }
 }
 module.exports = UserController;
 

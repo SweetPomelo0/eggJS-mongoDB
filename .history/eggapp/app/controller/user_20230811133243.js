@@ -167,7 +167,7 @@ class UserController extends Controller {
   /**
    * 忘记密码
    */
-  async forgetPassword() {
+  async resetPassword() {
     const { ctx, app } = this;
     const { email, code, newPassword } = ctx.request.body;
 
@@ -180,9 +180,6 @@ class UserController extends Controller {
 
       // if (savedCode === parseInt(code)) {
       if (savedCode.toString() === code) {
-        // 重置密码成功后删除用户的 token
-        const userId = email;
-        await ctx.service.token.deleteToken(userId);
         await ctx.service.user.updatePasswordByEmail(email, newPassword);
 
         ctx.body = {

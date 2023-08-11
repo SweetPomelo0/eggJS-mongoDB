@@ -29,7 +29,7 @@ class EmailService extends Service {
 
     // 邮件选项
     const mailOptions = {
-      from: process.env.AuthorizationUser, // 发件人地址
+      from: '739304768@qq.com', // 发件人地址
       to: account, // 收件人地址
       subject: '邮箱验证码', // 邮件标题
       html: `<p>您的验证码为：${code}</p>`, // 邮件内容
