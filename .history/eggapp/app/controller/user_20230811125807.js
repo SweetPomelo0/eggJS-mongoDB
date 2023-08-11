@@ -133,29 +133,22 @@ class UserController extends Controller {
 
     const redisKey = `verification:${email}`;
     const redisValue = await app.redis.get(redisKey);
+    const savedData = JSON.parse(redisValue);
+    const savedCode = savedData.code;
 
-    if (redisValue) {
-      const savedData = JSON.parse(redisValue);
-      const savedCode = savedData.code;
+    if (savedCode === code) {
+      await ctx.service.user.updatePasswordByEmail(email, newPassword);
 
-      // if (savedCode === parseInt(code)) {
-      if (savedCode.toString() === code) {
-        await ctx.service.user.updatePasswordByEmail(email, newPassword);
-
-        ctx.body = {
-          code: 200,
-          message: 'Password reset successfully.',
-        };
-      } else {
-        ctx.body = {
-          code: 400,
-          message: 'Invalid verification code.',
-        };
-      }
+      ctx.body = {
+        code: 200,
+        message: 'Password reset successfully.',
+        data: savedCode,
+      };
     } else {
       ctx.body = {
         code: 400,
-        message: 'Verification code not found. Please request a new code.',
+        message: 'Invalid verification code.',
+        data: savedCode,
       };
     }
   }

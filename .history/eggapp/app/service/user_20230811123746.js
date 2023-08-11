@@ -70,9 +70,7 @@ class UserService extends Service {
    */
   async updatePasswordByEmail(email, newPassword) {
     // 更新数据库的密码
-    const passwordNew = bcrypt.hashSync(newPassword, bcrypt.genSaltSync(10));
-    // await this.ctx.model.User.updateOne({ email }, { password: newPassword });
-    await this.ctx.model.User.updateOne({ email }, { password: passwordNew });
+    await this.ctx.model.User.updateOne({ email }, { password: newPassword });
   }
 }
 module.exports = UserService;

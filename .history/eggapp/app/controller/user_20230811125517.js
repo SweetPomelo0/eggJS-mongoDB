@@ -128,34 +128,25 @@ class UserController extends Controller {
 
   // 修改密码
   async resetPassword() {
-    const { ctx, app } = this;
+    const { ctx } = this;
     const { email, code, newPassword } = ctx.request.body;
 
-    const redisKey = `verification:${email}`;
-    const redisValue = await app.redis.get(redisKey);
+    // 获取保存在Redis中的验证码
+    // const saveCode = await ctx.app.redis.get(`verification:${email}`);
 
-    if (redisValue) {
-      const savedData = JSON.parse(redisValue);
-      const savedCode = savedData.code;
+    if (saveCode === code) {
+      await ctx.service.user.updatePasswordByEmail(email, newPassword);
 
-      // if (savedCode === parseInt(code)) {
-      if (savedCode.toString() === code) {
-        await ctx.service.user.updatePasswordByEmail(email, newPassword);
-
-        ctx.body = {
-          code: 200,
-          message: 'Password reset successfully.',
-        };
-      } else {
-        ctx.body = {
-          code: 400,
-          message: 'Invalid verification code.',
-        };
-      }
+      ctx.body = {
+        code: 200,
+        message: 'Password reset successfully.',
+        data: saveCode,
+      };
     } else {
       ctx.body = {
         code: 400,
-        message: 'Verification code not found. Please request a new code.',
+        message: 'Invalid verification code.',
+        data: saveCode,
       };
     }
   }

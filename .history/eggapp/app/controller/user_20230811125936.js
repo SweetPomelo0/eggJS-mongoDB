@@ -138,25 +138,21 @@ class UserController extends Controller {
       const savedData = JSON.parse(redisValue);
       const savedCode = savedData.code;
 
-      // if (savedCode === parseInt(code)) {
-      if (savedCode.toString() === code) {
+      if (savedCode === code) {
         await ctx.service.user.updatePasswordByEmail(email, newPassword);
 
         ctx.body = {
           code: 200,
           message: 'Password reset successfully.',
+          data: savedCode,
         };
       } else {
         ctx.body = {
           code: 400,
           message: 'Invalid verification code.',
+          data: savedCode,
         };
       }
-    } else {
-      ctx.body = {
-        code: 400,
-        message: 'Verification code not found. Please request a new code.',
-      };
     }
   }
 }

@@ -42,7 +42,7 @@ class EmailService extends Service {
       const redisKey = `verification:${account}`;
       const redisValue = JSON.stringify({ code, createTime: currentTime });
 
-      await app.redis.set(redisKey, redisValue, 'EX', 30000); // 5分钟过期
+      await app.redis.set(redisKey, redisValue, 'EX', 3000); // 5分钟过期
     } catch (error) {
       this.ctx.logger.error('Failed to send verification code email', error);
       throw new Error('Failed to send verification code email');
