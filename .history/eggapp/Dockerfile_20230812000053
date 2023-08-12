@@ -1,0 +1,37 @@
+# # docker build -t my-egg-app .
+# # docker run -p 7001:7001  my-egg-app
+# # docker-compose build
+# # docker-compose up -d
+
+
+# FROM node:slim
+# RUN mkdir /myapp
+# WORKDIR /myapp
+# COPY package.json /myapp/package.json
+# RUN npm i --registry=https://registry.npm.taobao.org
+# COPY . /myapp/
+
+# # # 暴露容器端口
+# EXPOSE 7001
+
+
+# # # Start the application
+# # CMD ["npm","start"]
+# # CMD ["npm", "run"]
+# # CMD ["npm", "run", "start"]
+# CMD ["npm", "run", "dev"]
+# 第一个阶段：构建阶段
+FROM node:14 AS builder
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+COPY . .
+RUN npm run build
+
+# 第二个阶段：生产阶段
+FROM node:14 AS production
+WORKDIR /app
+COPY --from=builder /app/package*.json ./
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/dist ./dist
+CMD ["npm", "run", "start:prod"]

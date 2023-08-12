@@ -1,0 +1,46 @@
+version: '3.2'
+services:
+
+  web:
+    build: .
+    command: npm run start
+    restart: always
+    deploy:
+      replicas: 1
+    volumes:
+      - .:/myapp
+    ports:
+      - "7001:7001"
+    environment:
+      EGG_SERVER_ENV: local
+      NODE_ENV: production
+      DB_HOST: db
+      DB_PORT: 27017
+      DB_USER: root
+      DB_PASSWORD: root
+      DB_NAME: momo
+      REDIS_HOST: cache
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
+    links:
+      - db
+      - cache
+
+  db:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+      MONGO_INITDB_DATABASE: momo
+    ports:
+      - 27017:27017
+
+  cache:
+    image: redis:6.2-alpine
+    restart: always
+    ports:
+      - 6379:6379
+    command: redis-server --save 20 1 --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
+    # volumes:
+    #   - cache:/data

@@ -1,0 +1,30 @@
+
+version: '3'
+services:
+  myapp:
+    container_name: myapp
+
+    restart: always
+    build: .
+    ports:
+      - '7001:7001'
+    links:
+      - redis
+      - mongo
+
+  mongo:
+    container_name: myapp-mongo
+    image: 'mongo:4'
+          # 初始化 mongodb 的账户，这个账户会创建在 admin 下，就是超管权限
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
+      MONGO_INITDB_DATABASE: my-database
+
+作者：PuffMeow
+链接：https://juejin.cn/post/7079312861670932494
+来源：稀土掘金
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+  redis:
+    container_name: myapp-redis
+    image: 'redis:4.0.11'
+

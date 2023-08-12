@@ -1,0 +1,33 @@
+
+version: '3'
+services:
+  web:
+    build: .
+    command: npm run dev
+    restart: always
+    deploy:
+      replicas: 2
+    ports:
+      - "7001:7001"
+      - "7002:7002"
+    # links:
+    #   - redis
+    #   - mongodb
+
+  # mongodb:
+  #   container_name: myapp-mongo
+  #   image: 'mongo:4'
+  #   ports:
+  #     - 27017:27017
+  #   environment:
+  #     # 初始化 mongodb 的账户，这个账户会创建在 admin 下，就是超管权限
+  #     MONGO_INITDB_ROOT_USERNAME: root
+  #     MONGO_INITDB_ROOT_PASSWORD: password
+  #     MONGO_INITDB_DATABASE: momo
+
+  # redis:
+  #   container_name: myapp-redis
+  #   image: 'redis:4.0.11'
+  #   ports:
+  #     - 6379:6379
+

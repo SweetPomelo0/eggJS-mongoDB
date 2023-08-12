@@ -1,0 +1,42 @@
+
+version: '3'
+services:
+  myapp:
+    container_name: myapp
+    restart: always
+    build: .
+    ports:
+      - '4300:4300'
+      - '4301:4301'
+    links:
+      - redis
+      - mongo
+  mongo:
+    container_name: myapp-mongo
+    image: 'mongo:4'
+  redis:
+    container_name: myapp-redis
+    image: 'redis:4.0.11'
+
+  # mongo:
+  #   container_name: mongo
+  #   image: mongo
+  #   restart: always
+  #   networks:
+  #       - my-server
+
+
+
+  # redis:
+  #   container_name: redis
+  #   image: redis
+  #   ports:
+  #       - "6379:6379"
+  #   restart: on-failure
+  #   networks:
+  #       - my-server
+
+
+# networks:
+#   my-server:
+#     # driver: bridge

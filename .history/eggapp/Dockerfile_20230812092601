@@ -1,0 +1,18 @@
+# docker-compose build
+# docker-compose up -d
+
+
+FROM node:14-alpine
+RUN mkdir /app
+WORKDIR /app
+COPY package.json /myapp/package.json
+
+RUN npm install
+COPY . /app/
+
+# # # 暴露容器端口
+EXPOSE 7001
+# # # Start the application
+CMD ["npm","run","start"]
+
+

@@ -1,0 +1,37 @@
+version: '3.2'
+services:
+
+  web:
+    build: .
+    command: npm run start
+    restart: always
+    deploy:
+      replicas: 1
+    volumes:
+      - .:/myapp
+    ports:
+      - "7001:7001"
+    environment:
+      EGG_SERVER_ENV: local
+      NODE_ENV: production
+  db:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+      MONGO_INITDB_DATABASE: momo
+
+    # ports:
+    #   - '27017:27017'
+    # volumes:
+    #   - db:/var/lib/postgresql/data
+    #   - ./db/init.sql:/docker-entrypoint-initdb.d/create_tables.sql
+  cache:
+    image: redis:6.2-alpine
+    restart: always
+    ports:
+      - 6379:6379
+    command: redis-server --save 20 1 --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
+    # volumes:
+    #   - cache:/data
