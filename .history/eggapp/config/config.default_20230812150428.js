@@ -29,31 +29,23 @@ module.exports = appInfo => {
     },
   };
 
-  config.cluster = {
-    listen: {
-      port: 7001, // 根据需要设置不同的端口
-    },
+  // mongoose本地数据库配置
+  config.mongoose = {
+    url: 'mongodb://127.0.0.1:27017/momo', // 端口号27017数据库名momo
+    options: { useNewUrlParser: true, useUnifiedTopology: true }, // 其他配置警告解除方法
   };
 
   config.jwt = {
     secret: 'admin',
   };
 
-  // Docker
-  // mongoose数据库配置
-  config.mongoose = {
-    host: 'egg-mongoose',
-    database: 'momo',
-    options: { useNewUrlParser: true, useUnifiedTopology: true }, // 其他配置警告解除方法
-  };
-
   // Redis数据库配置
   config.redis = {
     client: {
       port: 6379, // Redis port
-      host: 'egg-redis', // Redis host
-      password: '', // 如果有密码，这里填写 Redis 密码
-      db: 0, // 如果需要指定数据库索引，可以在这里设置
+      host: '127.0.0.1', // Redis host
+      password: '123456',
+      db: 0,
     },
   };
 

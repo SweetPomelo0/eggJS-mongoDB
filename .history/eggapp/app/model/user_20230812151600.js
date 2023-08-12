@@ -75,7 +75,7 @@ module.exports = app => {
 //         password: '3334',
 //         registrationDate: Date.now(),
 //         role: 'admin',
-//         isDeleted: 1,
+//         iseleted: 1,
 //       }).save();
 //     } else {
 //       console.log('-------------init user successfully--------------');

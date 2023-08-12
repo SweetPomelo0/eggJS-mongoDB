@@ -11,7 +11,7 @@ module.exports = app => {
   router.post('/login', controller.user.login); // 首页登录
   router.post('/currentUser', controller.user.getCurrentUserList); // 获取当前用户信息
   router.put('/resetPassword', controller.user.resetPassword); // 修改密码
-  router.put('/forgetPassword', controller.user.forgetPassword); // 忘记密码/重置密码
+  router.post('/forgetPassword', controller.user.forgetPassword); // 忘记密码/重置密码
 
   router.post('/sendEmail', controller.sendMail.sendVerificationCode); // 发送验证码
 };

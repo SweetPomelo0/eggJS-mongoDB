@@ -10,7 +10,7 @@ const redis = new Redis({
 });
 
 // 测试连接
-(async () => {
+async function linkRedis() {
   try {
     await redis.ping();
     console.log('Successfully connected to Redis');
@@ -19,5 +19,6 @@ const redis = new Redis({
   } finally {
     redis.quit(); // 关闭连接
   }
-})();
+}
+linkRedis();
 
