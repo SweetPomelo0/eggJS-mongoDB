@@ -13,6 +13,6 @@ module.exports = app => {
   router.put('/users/resetPassword', controller.user.resetPassword); // 修改密码
   router.put('/users/forgetPassword', controller.user.forgetPassword); // 忘记密码/重置密码
 
-  router.post('/api/sendEmail', controller.sendMail.sendVerificationCode); // 发送验证码
+  router.post('/users/sendEmail', controller.sendMail.sendVerificationCode); // 发送验证码
 };
 

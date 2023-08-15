@@ -198,14 +198,14 @@ class UserController extends Controller {
         return;
       } else {
         ctx.body = {
-          code: 400,
+          code: 200,
           message: 'Invalid verification code.',
         };
         return;
       }
     } else {
       ctx.body = {
-        code: 400,
+        code: 200,
         message: 'Verification code not found. Please request a new code.',
       };
       return;

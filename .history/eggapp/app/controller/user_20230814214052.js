@@ -85,7 +85,7 @@ class UserController extends Controller {
     // const retrievedToken = await ctx.service.token.getTokenFromRedis(userId);
 
     ctx.body = {
-      code: 201,
+      code: 200,
       data: res,
       message: 'register success',
       token,
@@ -116,7 +116,7 @@ class UserController extends Controller {
         return;
       } else {
         ctx.body = {
-          code: 401,
+          code: 400,
           message: 'error password',
         };
         return;
@@ -163,7 +163,7 @@ class UserController extends Controller {
       }
     } else {
       ctx.body = {
-        code: 400,
+        code: 200,
         message: 'Verification code not found. Please request a new code.',
       };
       return;
@@ -198,14 +198,14 @@ class UserController extends Controller {
         return;
       } else {
         ctx.body = {
-          code: 400,
+          code: 200,
           message: 'Invalid verification code.',
         };
         return;
       }
     } else {
       ctx.body = {
-        code: 400,
+        code: 200,
         message: 'Verification code not found. Please request a new code.',
       };
       return;

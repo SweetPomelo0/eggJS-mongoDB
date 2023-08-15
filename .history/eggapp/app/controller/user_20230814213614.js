@@ -10,7 +10,7 @@ class UserController extends Controller {
     const users = await ctx.service.user.findAll();
 
     ctx.body = {
-      code: 200,
+      code: 0,
       message: 'success',
       data: users,
     };
@@ -33,7 +33,7 @@ class UserController extends Controller {
       };
     } else {
       ctx.body = {
-        code: 404,
+        code: 200,
         message: 'User not found',
       };
     }
@@ -48,7 +48,7 @@ class UserController extends Controller {
     // 验证邮箱格式
     if (!ctx.service.user.isValidEmail(req.email)) {
       ctx.body = {
-        code: 400,
+        code: 200,
         message: 'Invalid email format',
       };
       return;
@@ -58,7 +58,7 @@ class UserController extends Controller {
     const existingUser = await ctx.service.user.findByEmail(req.email);
     if (existingUser) {
       ctx.body = {
-        code: 400,
+        code: 200,
         message: 'Email already registered',
       };
       return;
@@ -67,7 +67,7 @@ class UserController extends Controller {
     // 验证密码长度，密码不合法返回相应错误信息
     if (req.password.length < 8) {
       ctx.body = {
-        code: 400,
+        code: 200,
         message: 'Password must be at least 8 characters long',
       };
       return;
@@ -85,7 +85,7 @@ class UserController extends Controller {
     // const retrievedToken = await ctx.service.token.getTokenFromRedis(userId);
 
     ctx.body = {
-      code: 201,
+      code: 200,
       data: res,
       message: 'register success',
       token,
@@ -116,7 +116,7 @@ class UserController extends Controller {
         return;
       } else {
         ctx.body = {
-          code: 401,
+          code: 200,
           message: 'error password',
         };
         return;
@@ -124,7 +124,7 @@ class UserController extends Controller {
     } else {
       // 用户邮箱不存在，提示注册
       ctx.body = {
-        code: 400,
+        code: 200,
         message: 'email not existing , please register.',
       };
       return;
@@ -156,14 +156,14 @@ class UserController extends Controller {
         return;
       } else {
         ctx.body = {
-          code: 400,
+          code: 200,
           message: 'Invalid verification code.',
         };
         return;
       }
     } else {
       ctx.body = {
-        code: 400,
+        code: 200,
         message: 'Verification code not found. Please request a new code.',
       };
       return;
@@ -198,14 +198,14 @@ class UserController extends Controller {
         return;
       } else {
         ctx.body = {
-          code: 400,
+          code: 200,
           message: 'Invalid verification code.',
         };
         return;
       }
     } else {
       ctx.body = {
-        code: 400,
+        code: 200,
         message: 'Verification code not found. Please request a new code.',
       };
       return;
